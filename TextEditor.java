@@ -197,13 +197,17 @@ public class TextEditor extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
+			//retreive action command
 			String actionCommand = e.getActionCommand();
 
+			//if the New button was pressed, clear the text area
 			if (actionCommand.equals("New"))
 			{
 				fileName = "";
 				theText.setText("");
 			}
+			
+			//if the Open button was pressed, open filechooser
 			else if (actionCommand.equals("Open"))
 			{
 				fileChooser = new JFileChooser();
@@ -216,6 +220,7 @@ public class TextEditor extends JFrame
 					fileName = fileChooser.getName(fileChooser.getSelectedFile());
 					theText.setText("");
 					
+					//try to open the selected file
 					try
 					{
 						FileReader fileReader = new FileReader(file);
@@ -228,12 +233,16 @@ public class TextEditor extends JFrame
 						
 						bufferedReader.close();
 					}
+					
+					//file is not found
 					catch(FileNotFoundException ex)
 					{
 						System.out.println(
 							"Unable to open file '" + 
 							fileName + "'");                
 					}
+					
+					//problem reading file contents
 					catch(IOException ex)
 					{
 						System.out.println(
@@ -242,13 +251,17 @@ public class TextEditor extends JFrame
 					}
 				}
 			}
+			
+			//if Save button is pressed
 			else if (actionCommand.equals("Save"))
 			{
+				//if file has a name, overwrite it
 				if(fileName != null)
 				{
 					File file = new File(fileName);
 					FileWriter overWrite = null;
 					
+					//try to overwrite
 					try
 					{
 						String path = file.getAbsolutePath();
@@ -267,12 +280,16 @@ public class TextEditor extends JFrame
 							overWrite.close();
 						}
 					}
+					
+					//file is not found
 					catch(FileNotFoundException ex)
 					{
 						System.out.println(
 							"Unable to open file '" + 
 							fileName + "'");                
 					}
+					
+					//error saving file
 					catch(IOException ex)
 					{
 						System.out.println(
@@ -280,16 +297,20 @@ public class TextEditor extends JFrame
 							+ fileName + "'");
 					}
 				}
+				
+				//if file has no name, open filechooser to make one
 				else
 				{
 					fileChooser = new JFileChooser();	
 					int result = fileChooser.showSaveDialog(TextEditor.this);
 					File file = fileChooser.getSelectedFile();
 					BufferedWriter writer = null;
+					
 					if (result == JFileChooser.APPROVE_OPTION)
 					{					
 						fileName = fileChooser.getName(fileChooser.getSelectedFile());
 						
+						//try to create a filename and save it
 						try
 						{
 							String path = file.getAbsolutePath();
@@ -306,12 +327,16 @@ public class TextEditor extends JFrame
 								writer.close();
 							}
 						}
+						
+						//file not found
 						catch(FileNotFoundException ex)
 						{
 							System.out.println(
 								"Unable to open file '" + 
 								fileName + "'");                
 						}
+						
+						//error saving file
 						catch(IOException ex)
 						{
 							System.out.println(
@@ -321,6 +346,8 @@ public class TextEditor extends JFrame
 					}
 				}
 			}
+			
+			//if Save As button was pressed
 			else if (actionCommand.equals("Save As"))
 			{
 				fileChooser = new JFileChooser();
@@ -332,6 +359,7 @@ public class TextEditor extends JFrame
 				{					
 					fileName = fileChooser.getName(fileChooser.getSelectedFile());
 					
+					//try to create a filename and save it
 					try
 					{
 						String path = file.getAbsolutePath();
@@ -348,12 +376,16 @@ public class TextEditor extends JFrame
 							writer.close();
 						}
 					}
+					
+					//file not found
 					catch(FileNotFoundException ex)
 					{
 						System.out.println(
 							"Unable to save file '" + 
 							fileName + "'");                
 					}
+					
+					//error saving file
 					catch(IOException ex)
 					{
 						System.out.println(
@@ -362,12 +394,19 @@ public class TextEditor extends JFrame
 					}
 				}
 			}
+			
+			//if Exit button was pressed
 			else if (actionCommand.equals("Exit"))
 			{
+				//close down the program
 				System.exit(0);
 			}
+			
+			//if for some reason an error occurs with the buttons
 			else
+			{
 				theText.setText("Error in memo interface");
+			}
 		}
    }
    
